@@ -2,18 +2,18 @@
 
 This is a Kohana extension that adds polymorphic associations to the ORM.
 
-It's just simple file that extends the Kohana_ORM
+It's just a simple file that extends Kohana_ORM
 
 Relationships:
 
 * morph_to - the equivalent of belongs_to, polymorphic
-* morph_to_one_or_many - the equivalent of has_one or has_man, polymorphic
-* morph_to_many_through - the equivalent of has_one or has_man, polymorphic
+* morph_to_one_or_many - the equivalent of has_one or has_many, polymorphic
+* morph_to_many_through - the equivalent of has_one or has_many, polymorphic
 
 ## Compatibility
 
-**Kohana 3.4** 
-**Kohana 3.3**
+* **Kohana 3.4** 
+* **Kohana 3.3**
 
 I haven't tested how it performs on lower versions, yet, so I can only add these for now.
 
@@ -56,15 +56,15 @@ We do it like so:
 
 ```php
 <?
-	class Model_Website extends ORM
-	{
-	  	protected $morph_to_one_or_many = [
-	  		'comments' => [
-          'column' => 'commentable',
-	  			'single' => false,
-	  		]
-  		];
-	}
+  class Model_Website extends ORM
+  {
+      protected $morph_to_one_or_many = [
+        'comments' => [
+            'column' => 'commentable',
+            'single' => false,
+        ]
+      ];
+  }
 ?>
 ```
 
@@ -72,6 +72,7 @@ Single by default is false, but I would like to include it in the example so you
 Single defines if the relationship should return multiple results or a single one - in our case, we have multiple.
 
 Now, when the website object is loaded and "comments" is called, it would query all the comments for that website.
+
 Like so:
 
 ```php
@@ -101,8 +102,8 @@ For that, we'll assume the Post model to have only one comment per post. I know 
   {
       protected $morph_to_one_or_many = [
         'comment' => [
-          'column' => 'commentable',
-          'single' => true,
+            'column' => 'commentable',
+            'single' => true,
         ]
       ];
   }
@@ -147,7 +148,7 @@ We do it with a declaration in the Comment Model:
   class Model_Comment extends ORM
   {
       protected $morph_to = [
-        'commentable_object' => 'commentable'
+          'commentable_object' => 'commentable'
       ];
   }
 ?>
@@ -165,6 +166,7 @@ And that's it! Now, we could load our related model like so:
 
   $related_object = $comment->commentable;
 ?>
+```
 
 This is how we query the related model to the comment. The end results varies depending on which object you get - if you get a Website, it would load the website properties (sorry if it's obvious) and if it's Post, it would the post properties. You might like to think of an Interface that handles all the different cases, if you're planning on using this.
 
@@ -183,7 +185,7 @@ We explicitly enter the Model name in the commentable_type column, along with it
 
 ### $morph_to_many_through
 
-This relationship is the equivalent of has_many_through in Kohana ORM, only polymorphic. And tre tricky part is that one side of the relationship is the polymorphic association, while the other is standard foreign_key way.
+This relationship is the equivalent of has_many_through in Kohana ORM, only polymorphic. And the tricky part is that one side of the relationship is the polymorphic association, while the other is standard foreign_key way.
 
 Let's assume we have a Tag Model, a Knowledge_Base Model and a Project Model. Project and Knowledge_Base have many tags and the Tag model has many projects / knowledge_base entries.
 
