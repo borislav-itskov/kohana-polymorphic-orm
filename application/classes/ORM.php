@@ -108,7 +108,7 @@ class ORM extends Kohana_ORM
                 // fixate query
                 $query = ORM::factory($morped_model)
                     ->where($morped_column_id, '=', $this->_object[$this->_primary_key])
-                    ->where($morped_column_type, '=', inflector::singular($this->_table_name));
+                    ->where($morped_column_type, '=', str_replace('Model_', '', get_class($this)));
 
                 // call find if association is set to single
                 if (isset($this->morph_one_or_many[$column]['single']) &&
@@ -141,12 +141,12 @@ class ORM extends Kohana_ORM
                 $pivot = $this->get_pivot($column);
                 $foreign_or_far_key = $this->get_foreign_or_far('morph_many_through', $column);
 
-                if ($this->is_polymorhapble($column))
+                if ($this->is_polymorhapble($column)) 
                     return ORM::factory($morped_model)
                             ->join($pivot, 'LEFT')
                             ->on($pivot . '.' . $foreign_or_far_key, '=', inflector::singular($morped_model) . '.id')
                             ->where($pivot . '.' . $morped_column_id, '=', $this->_object[$this->_primary_key])
-                            ->where($pivot . '.' . $morped_column_type, '=', inflector::singular($this->_table_name))
+                            ->where($pivot . '.' . $morped_column_type, '=', str_replace('Model_', '', get_class($this)))
                             ->group_by(inflector::singular($morped_model) . '.id')
                             ->select(DB::expr(inflector::singular($morped_model) . '.*, COUNT('.$pivot . '.' . $morped_column_id .') as polymorhpic_count'))
                             ->having('polymorhpic_count', '>', 0);

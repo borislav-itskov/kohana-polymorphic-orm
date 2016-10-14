@@ -2,13 +2,13 @@
 
 This is a Kohana extension that adds polymorphic associations to the ORM.
 
-It's just a simple file that extends Kohana_ORM
+It's just a simple file that extends Kohana_ORM.
 
 Relationships:
 
 * morph_to - the equivalent of belongs_to, polymorphic
 * morph_to_one_or_many - the equivalent of has_one or has_many, polymorphic
-* morph_to_many_through - the equivalent of has_one or has_many, polymorphic
+* morph_to_many_through - the equivalent of has_many_through, polymorphic
 
 ## Compatibility
 
